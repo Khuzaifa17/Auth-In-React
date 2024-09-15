@@ -8,6 +8,10 @@ const navigation = useNavigation();
     const loginaNavigation=()=>{
         navigation.navigate('Login')
     }
+    const SignupNavigation=()=>{
+        navigation.navigate('Signup')
+    }
+    
   return (
     <View style={styles.container}>
       <Image source={require("../Images/logo.png")} style={styles.logo}/>
@@ -20,15 +24,15 @@ const navigation = useNavigation();
         }]}>
             <Text style={styles.loginbuttonText} onPress={loginaNavigation}>Login</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={[styles.loginbuttonWrapper,{height:60,}]}>
-            <Text style={styles.SignupbuttonText}>Sign-Up</Text>
+        <TouchableOpacity style={[styles.loginbuttonWrapper,{height:60,}] }>
+            <Text style={styles.SignupbuttonText} onPress={SignupNavigation}>Sign-Up</Text>
         </TouchableOpacity>
       </View>
     </View>
   )
 }
 
-export default HomeScreen
+export default HomeScreen;
 
 const styles = StyleSheet.create({
     container:{

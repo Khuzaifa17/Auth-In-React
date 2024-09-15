@@ -1,16 +1,46 @@
-import { StyleSheet, Text, TextInput, Image, TouchableOpacity, View } from 'react-native'
+import { StyleSheet, Text, TextInput, Image, TouchableOpacity, View, Alert, ActivityIndicator } from 'react-native'
 import React, { useState } from 'react'
 import Ionicons from "react-native-vector-icons/Ionicons"
 import Feather from "react-native-vector-icons/Feather"
 import { color } from '../utils/colors'
-import { Colors } from 'react-native/Libraries/NewAppScreen'
+import { useNavigation } from '@react-navigation/core'
+import { signInWithEmailAndPassword } from '@firebase/auth'
+import { auth } from '../utils/firebase'
 
 const LoginScreen = () => {
+    const navigtion = useNavigation();
     const [Securetex , setSecuretext]= useState(true);
+    const [email, Setemail]= useState('');
+    const [password, Setpassword]= useState('');
+    const [isloading, Setisloading] =useState(false);
+
+    const handleLogin = async ()=>{
+        if(!email || !password){
+            Alert.alert('Validation Failed','Please Enter both email and password');
+            return;
+        }
+        Setisloading(true);
+        try {
+            await signInWithEmailAndPassword(auth, email, password);
+            Alert.alert('Success','Logged in Successfully');
+            navigtion.navigate('Welcome');
+        } catch (error) {
+            console.log(error);
+            Alert.alert('Login Failed',error.message); 
+        }
+        Setisloading(false);
+    }
+   
+    const BackNavigation=()=>{
+        navigtion.goBack()
+    }
+    const SignupScreenNavigation = ()=>{
+        navigtion.navigate('Signup')
+    }
   return (
     <View style={styles.Container}>
       <TouchableOpacity style={styles.backButton}>
-        <Ionicons name={"arrow-back-outline"} color={color.white} size={24} />
+        <Ionicons name={"arrow-back-outline"} color={color.white} size={24} onPress={BackNavigation}/>
       </TouchableOpacity>
       <Text style={styles.Heading1}>Hey,</Text>
       <Text style={styles.Heading2}>Welcome</Text>
@@ -19,7 +49,7 @@ const LoginScreen = () => {
       <View style={styles.formContainer}>
         <View style={styles.TextField }>
             <Ionicons name={"mail-outline"} color={color.grey} size={24} />
-            <TextInput style={styles.textInput} placeholder='Enter you email' keyboardType='email-address'>    
+            <TextInput style={styles.textInput} placeholder='Enter you email' keyboardType='email-address' value={email} onChangeText={Setemail}>    
             </TextInput>      
         </View>
       </View>
@@ -31,6 +61,8 @@ const LoginScreen = () => {
                  style={styles.textInput} 
                  placeholder='Enter your password'
                  keyboardType='default'  
+                 value={password}
+                 onChangeText={Setpassword}
                  secureTextEntry={Securetex} />    
             <TouchableOpacity onPress={() => setSecuretext(prev => !prev)}>
                 <Ionicons name={Securetex ? "eye-off" : "eye"} color={color.grey} size={24} />
@@ -40,7 +72,9 @@ const LoginScreen = () => {
                 <Text style={styles.forgotPassword}>Forgot Password?</Text>
             </TouchableOpacity>  
             <TouchableOpacity style={styles.loginButton}>
-                <Text style={styles.loginText}>Login</Text>
+               {isloading?(
+                <ActivityIndicator size={'large'} color={color.Secondary}></ActivityIndicator>
+               ):( <Text style={styles.loginText} onPress={handleLogin}>Login</Text>)}
             </TouchableOpacity>
             <Text style={styles.continuText}>or Continue With</Text>
             <TouchableOpacity style={styles.googleWrapper}>
@@ -50,7 +84,7 @@ const LoginScreen = () => {
         <View style={styles.accountwrapper}>
             <Text>Don't have an Account?</Text>
             <TouchableOpacity style={styles.signupwrapper}>
-                <Text style={styles.signuptext}>Sign up</Text>
+                <Text style={styles.signuptext} onPress={SignupScreenNavigation}>Sign up</Text>
             </TouchableOpacity>
         </View>
      </View>
