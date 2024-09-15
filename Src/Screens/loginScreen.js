@@ -1,16 +1,62 @@
-import { StyleSheet, Text, Touchable, TouchableOpacity, View } from 'react-native'
-import React from 'react'
+import { StyleSheet, Text, TextInput, Image, TouchableOpacity, View } from 'react-native'
+import React, { useState } from 'react'
 import Ionicons from "react-native-vector-icons/Ionicons"
+import Feather from "react-native-vector-icons/Feather"
 import { color } from '../utils/colors'
+import { Colors } from 'react-native/Libraries/NewAppScreen'
 
 const LoginScreen = () => {
+    const [Securetex , setSecuretext]= useState(true);
   return (
     <View style={styles.Container}>
       <TouchableOpacity style={styles.backButton}>
         <Ionicons name={"arrow-back-outline"} color={color.white} size={24} />
       </TouchableOpacity>
+      <Text style={styles.Heading1}>Hey,</Text>
+      <Text style={styles.Heading2}>Welcome</Text>
+      <Text style={styles.Heading3}>Back</Text>
+
+      <View style={styles.formContainer}>
+        <View style={styles.TextField }>
+            <Ionicons name={"mail-outline"} color={color.grey} size={24} />
+            <TextInput style={styles.textInput} placeholder='Enter you email' keyboardType='email-address'>    
+            </TextInput>      
+        </View>
+      </View>
+
+     <View style={styles.formContainer}>
+        <View style={styles.TextField}>
+            <Feather name={"lock"} color={color.grey} size={24} />
+            <TextInput 
+                 style={styles.textInput} 
+                 placeholder='Enter your password'
+                 keyboardType='default'  
+                 secureTextEntry={Securetex} />    
+            <TouchableOpacity onPress={() => setSecuretext(prev => !prev)}>
+                <Ionicons name={Securetex ? "eye-off" : "eye"} color={color.grey} size={24} />
+            </TouchableOpacity>      
+        </View>
+            <TouchableOpacity>
+                <Text style={styles.forgotPassword}>Forgot Password?</Text>
+            </TouchableOpacity>  
+            <TouchableOpacity style={styles.loginButton}>
+                <Text style={styles.loginText}>Login</Text>
+            </TouchableOpacity>
+            <Text style={styles.continuText}>or Continue With</Text>
+            <TouchableOpacity style={styles.googleWrapper}>
+                <Image source={require('../Images/Google.png')} style={styles.google}></Image>
+                <Text style={styles.googleText}>Google</Text>
+            </TouchableOpacity>
+        <View style={styles.accountwrapper}>
+            <Text>Don't have an Account?</Text>
+            <TouchableOpacity style={styles.signupwrapper}>
+                <Text style={styles.signuptext}>Sign up</Text>
+            </TouchableOpacity>
+        </View>
+     </View>
       
-    </View>
+      
+ </View>
   )
 }
 
@@ -21,7 +67,7 @@ const styles = StyleSheet.create({
         flex: 1,
         paddingTop: 30,
         paddingHorizontal: 20,
-        backgroundColor: color.white
+        backgroundColor: color.white,
     },
     backButton:{
         backgroundColor: color.grey,
@@ -30,5 +76,87 @@ const styles = StyleSheet.create({
         borderRadius: 20,
         justifyContent:"center",
         alignItems: "center",
+        marginBottom: 20
+    },
+    Heading1:{
+        fontSize: 32,
+        color: color.grey,
+    },
+    Heading2:{
+        fontSize: 32,
+        color: color.grey
+    },
+    Heading3:{
+        fontSize: 32,
+        color: color.grey
+    },
+    formContainer:{
+        marginTop: 20,
+    },
+    TextField:{
+        height: 50,
+        borderWidth: 1,
+        borderRadius: 100,
+        borderColor: color.Secondary,
+        paddingHorizontal: 20,
+        flexDirection:'row',
+        alignItems:'center'
+    },
+    textInput:{
+    flex: 1,
+    paddingHorizontal:10
+    },
+    forgotPassword:{
+        marginVertical:10,
+        color: color.primary,
+        textAlign: 'right',
+
+    },
+    loginButton:{
+        backgroundColor: color.primary,
+        width: '100%',
+        height:40,
+        borderRadius: 100,
+        alignContent:'center',
+        marginTop:15,
+    },
+    loginText:{
+        color: color.white,
+        fontWeight:'bold',
+        textAlign:"center",
+        padding:10
+
+    },
+    continuText:{
+        color: color.primary,
+        alignSelf:'center',
+        marginVertical:10,
+    },
+    google:{
+        height:18,
+        width:18
+    },
+    googleWrapper:{
+        flexDirection:'row',
+        alignItems:'center',
+        height: 40,
+        borderWidth:1,
+        borderColor: color.primary,
+        borderRadius:100,
+        justifyContent:'center',
+    },
+    googleText:{
+        paddingHorizontal: 10,
+    },
+    accountwrapper:{
+        marginTop:10,
+        flexDirection:'row',
+        justifyContent:'center',
+        color:color.primary
+    },
+    signuptext:{
+        color: color.primary,
+        fontWeight: 'bold',
+        paddingLeft:10
     }
 })
